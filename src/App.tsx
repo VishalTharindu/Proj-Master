@@ -1,33 +1,34 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
-import './App.css'
+import {Routes, Route, Navigate} from 'react-router-dom'
+import { Container } from 'react-bootstrap'
+import "bootstrap/dist/css/bootstrap.min.css"
+import ProjectLayout from './Layout/Project/ProjectLayout'
+import WorkItemLayout from './Layout/WorkItem/ProjectLayout'
+import { CreateProject, EditProject, ProjectDetails, ProjectList } from './features/project'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <Container className='my-4'>
+      <Routes>
+        <Route path='/' element={<h1>Dashboard</h1>} />
+        <Route path='/project' element={<ProjectLayout />}>
+          <Route index element={<ProjectList />} />
+          <Route path=':id' element={<ProjectDetails />}/>
+          <Route path='create' element={<CreateProject />}/>
+          <Route path=':id/edit' element={<EditProject />} />
+        </Route>
+        <Route path='/ticket' element={<WorkItemLayout />}>
+          <Route index element={<h4>Ticket List</h4>} />
+          <Route path=':id' element={<h4>Show Ticket Details</h4>} />
+          <Route path='create' element={<h4>Create Ticket</h4>}/>
+          <Route path=':id/edit' element={<h4>Edit Ticket</h4>} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" />}/>
+      </Routes>
+    </Container>
   )
 }
 
